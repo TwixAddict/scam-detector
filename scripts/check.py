@@ -42,6 +42,16 @@ for path in filter(None, referenced):
     if not os.path.isfile(os.path.join(EXT, path)):
         fail(f"manifest.json references a missing file: {path}")
 
+# The Chromium service worker must load exactly the scripts Firefox lists as background scripts.
+sw_path = os.path.join(EXT, "src", "background", "service-worker.js")
+if os.path.isfile(sw_path):
+    imported = re.findall(r'"([^"]+\.js)"', open(sw_path, encoding="utf-8").read())
+    as_manifest = [os.path.normpath(os.path.join("src/background", p)) for p in imported]
+    if as_manifest != manifest.get("background", {}).get("scripts", []):
+        fail("src/background/service-worker.js doesn't import the same scripts as manifest.json background.scripts")
+else:
+    fail("missing src/background/service-worker.js (needed for the Chromium build)")
+
 # Every local script, stylesheet and image in the HTML pages must exist; nothing may load from the web.
 for root, _, files in os.walk(EXT):
     for name in files:
@@ -57,6 +67,16 @@ for root, _, files in os.walk(EXT):
                     continue
                 if not os.path.isfile(os.path.normpath(os.path.join(root, ref))):
                     fail(f"{path}: missing {ref}")
+        if name.endswith((".js", ".html", ".css", ".json")):
+            # Chrome refuses files that aren't valid UTF-8 or contain Unicode "noncharacters" (e.g. U+FFFF).
+            try:
+                text = open(path, "rb").read().decode("utf-8")
+            except UnicodeDecodeError:
+                fail(f"{path}: not valid UTF-8")
+                continue
+            bad = next((i for i, c in enumerate(text) if 0xFDD0 <= ord(c) <= 0xFDEF or (ord(c) & 0xFFFE) == 0xFFFE), None)
+            if bad is not None:
+                fail(f"{path}:{text.count(chr(10), 0, bad) + 1}: contains a Unicode noncharacter (write it as a \\u escape)")
         if name.endswith(".js"):
             code = open(path, encoding="utf-8").read()
             for pattern, why in [

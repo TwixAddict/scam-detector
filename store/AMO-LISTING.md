@@ -1,6 +1,6 @@
 # Firefox Add-ons (AMO) listing
 
-Copy these into the fields on [addons.mozilla.org/developers](https://addons.mozilla.org/developers/) when you submit. Images are in this folder: `icon-512.png` and `screenshot-1.png` to `screenshot-3.png` (1280×800).
+Copy these into the fields on [addons.mozilla.org/developers](https://addons.mozilla.org/developers/) when you submit. The package is `dist/scam-detector-<version>-firefox.zip` (made by `scripts/build.sh`). Images are in this folder: `icon-512.png` and `screenshot-1.png` to `screenshot-3.png` (1280×800).
 
 ## Basic fields
 

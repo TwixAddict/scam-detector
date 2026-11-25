@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Scam Detector",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Warns about phishing and scam emails in Gmail and Outlook, checked on your own device. Open-source school project.",
   "homepage_url": "https://github.com/TwixAddict/scam-detector",
   "icons": {
@@ -24,6 +24,7 @@
   ],
   "background": {
     "scripts": [
+      "src/core/browser-compat.js",
       "src/core/lists.js",
       "src/core/i18n.js",
       "src/core/domain.js",
@@ -41,6 +42,7 @@
         "https://outlook.office365.com/*"
       ],
       "js": [
+        "src/core/browser-compat.js",
         "src/core/lists.js",
         "src/core/i18n.js",
         "src/core/domain.js",

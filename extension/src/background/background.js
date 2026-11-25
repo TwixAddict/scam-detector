@@ -121,7 +121,7 @@
     return stored[key] || null;
   }
 
-  browser.runtime.onMessage.addListener((message, sender) => {
+  function handleMessage(message, sender) {
     switch (message && message.type) {
       case "checkUrls":
         return checkUrls(message.urls || []).then((matches) => ({ matches }));
@@ -141,6 +141,18 @@
       default:
         return undefined;
     }
+  }
+
+  // Answer through sendResponse (and return true to keep the channel open): unlike returning a
+  // promise, this works in both Firefox and Chromium.
+  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    const reply = handleMessage(message, sender);
+    if (!reply || typeof reply.then !== "function") return false;
+    reply.then(sendResponse, (err) => {
+      console.warn("[Scam Detector]", err);
+      sendResponse(undefined);
+    });
+    return true;
   });
 
   browser.tabs.onUpdated.addListener((tabId, changeInfo) => {

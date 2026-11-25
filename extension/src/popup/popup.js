@@ -7,7 +7,7 @@
 
   // Everything the page-scan needs, injected only when the user clicks "Scan this page".
   const SCAN_FILES = [
-    "src/core/lists.js", "src/core/i18n.js", "src/core/domain.js", "src/core/phrases.js", "src/core/detector.js",
+    "src/core/browser-compat.js", "src/core/lists.js", "src/core/i18n.js", "src/core/domain.js", "src/core/phrases.js", "src/core/detector.js",
     "src/core/html.js", "src/core/mime.js", "src/content/adapters.js", "src/content/runner.js",
   ];
 

@@ -952,7 +952,7 @@
   SD.setLanguage = function (setting) {
     SD.lang = SD.resolveLanguage(setting);
     if (typeof document !== "undefined" && document.documentElement && document.documentElement.lang !== SD.lang &&
-        location.protocol === "moz-extension:") {
+        /^(moz|chrome)-extension:$/.test(location.protocol)) {
       document.documentElement.lang = SD.lang;
     }
     return SD.lang;

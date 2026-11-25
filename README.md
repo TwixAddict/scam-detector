@@ -3,7 +3,7 @@
 <h1 align="center">Scam Detector</h1>
 
 <p align="center">
-  A Firefox extension that warns you about phishing and scam emails in <b>Gmail</b> and <b>Outlook on the web</b>,<br>
+  A browser extension for Firefox and Chromium browsers (Chrome, Edge, Brave, Opera) that warns you about phishing and scam emails in <b>Gmail</b> and <b>Outlook on the web</b>,<br>
   and explains why in plain language. Everything is checked on your own device.
 </p>
 
@@ -43,16 +43,16 @@ Also included:
 
 ## Install
 
-**From Firefox Add-ons:** [addons.mozilla.org/firefox/addon/scam-detector-school](https://addons.mozilla.org/firefox/addon/scam-detector-school/) (Firefox 140 or newer, including Firefox-based browsers like Zen).
+**Firefox** (140 or newer, including Firefox-based browsers like Zen): [addons.mozilla.org/firefox/addon/scam-detector-school](https://addons.mozilla.org/firefox/addon/scam-detector-school/)
+
+**Chrome, Edge, Brave, Opera, Vivaldi** (Chromium 116 or newer): Chrome Web Store and Edge Add-ons listings are coming. Until then, install it by hand as described below.
 
 **From this repository (for testing):**
 
-1. Download or clone this repository.
-2. In Firefox, go to `about:debugging#/runtime/this-firefox`.
-3. Click **Load Temporary Add-on…** and choose `extension/manifest.json`.
-4. Open Gmail or Outlook on the web and open an email.
+- *Firefox:* go to `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → choose `extension/manifest.json`. Temporary add-ons are removed when Firefox restarts.
+- *Chromium browsers:* run `scripts/build.sh` (or download the `-chromium.zip` from the [Releases](https://github.com/TwixAddict/scam-detector/releases) page and unzip it). Then open `chrome://extensions` (Edge: `edge://extensions`), turn on **Developer mode**, click **Load unpacked** and choose the `dist/chromium` folder (or the unzipped folder).
 
-Temporary add-ons are removed when Firefox restarts.
+Then open Gmail or Outlook on the web and open an email.
 
 If no card appears, open the extension's popup while Gmail is open. Its top line says whether automatic warnings are running, with a one-click fix if they aren't: **Allow automatic warnings** when the browser didn't give the extension access to Gmail, or **Start them now** when the tab was open before the extension loaded.
 
@@ -76,12 +76,12 @@ extension/                 The add-on itself (exactly what is uploaded to Firefo
     adapters.js            Finds the open email in the Gmail and Outlook page
     runner.js              Settings, sender memory, phishing-list lookup
     content.js             Watches the page and inserts the card (in a shadow root)
-  src/background/          Downloads the OpenPhish list, answers link lookups, sets the badge
+  src/background/          Downloads the OpenPhish list, answers link lookups, sets the badge (service-worker.js: Chromium entry point)
   src/ui/                  The result card and shared page styles
   src/popup/ src/options/ src/analyzer/
 docs/                      Website (GitHub Pages): landing page, live demo, privacy policy
-store/                     Firefox Add-ons listing text, screenshots and icon
-scripts/                   check.py, build.sh, build-site.sh, make_icons.py, make_screenshots.sh
+store/                     Store listing text (Firefox, Chrome/Edge), screenshots, promo tile and icon
+scripts/                   check.py, build.sh, chromium_manifest.py, build-site.sh, make_icons.py, make_screenshots.sh
 test/                      Browser test suite (tests.html) and a preview of every card state (preview.html)
 ```
 
@@ -100,13 +100,17 @@ Mail from the real domain of a **known company** (the brand list plus services l
 
 ## Development
 
-Requirements: Firefox 140+, Python 3. There is no build step and no dependencies; the code runs as written.
+Requirements: Firefox 140+ or a Chromium browser 116+, and Python 3. There is no build step and no dependencies; the code runs as written.
+
+**One source, two browsers.** `extension/` is the Firefox version. The Chromium version is the same files with a generated manifest (`scripts/chromium_manifest.py`): Chromium runs the background as one service worker (`src/background/service-worker.js`, which loads the same scripts), and `src/core/browser-compat.js` gives Chromium's `chrome` API the `browser` name Firefox uses.
 
 ```bash
 # Run the tests: open http://127.0.0.1:8765/test/tests.html (the title shows PASS when all pass)
 python3 -m http.server 8765
 
-# Check the extension and build the zip for Firefox Add-ons (dist/scam-detector-<version>.zip)
+# Check the extension and build both packages:
+#   dist/scam-detector-<version>-firefox.zip   for Firefox Add-ons
+#   dist/scam-detector-<version>-chromium.zip  for the Chrome Web Store and Edge Add-ons (unpacked copy in dist/chromium/)
 scripts/build.sh
 
 # Build the website locally and open http://127.0.0.1:8000

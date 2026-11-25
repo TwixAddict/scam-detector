@@ -329,7 +329,7 @@
   SD.domainInText = function (text) {
     const clean = SD.stripInvisible(text || "").trim();
     if (!clean || clean.length > 300) return null;
-    const m = clean.match(/^(?:https?:\/\/)?((?:[a-z0-9¡-￿-]+\.)+[a-z¡-￿]{2,})(?::\d+)?(?:[/?#]\S*)?$/i);
+    const m = clean.match(/^(?:https?:\/\/)?((?:[a-z0-9\u00a1-\uffff-]+\.)+[a-z\u00a1-\uffff]{2,})(?::\d+)?(?:[/?#]\S*)?$/i);
     if (!m) return null;
     const host = m[1].toLowerCase();
     const tld = SD.tldOf(host);
