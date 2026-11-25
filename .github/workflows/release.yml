@@ -1,0 +1,25 @@
+# On a version tag (e.g. v1.0.0): checks the extension, builds the zip and attaches it to a GitHub release.
+# The zip is the same file you upload to addons.mozilla.org.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check that the tag matches the manifest version
+        run: |
+          version=$(python3 -c 'import json; print(json.load(open("extension/manifest.json"))["version"])')
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME doesn't match manifest version $version"; exit 1; }
+      - run: scripts/build.sh
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/*.zip --title "Scam Detector $GITHUB_REF_NAME" --notes "Extension package for Firefox. Install from addons.mozilla.org, or load this zip via about:debugging for testing."

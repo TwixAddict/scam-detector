@@ -1,0 +1,45 @@
+/* Fixed size: a Firefox popup sizes itself to its content, so viewport units (vw) collapse it. */
+html, body { width: 400px; min-width: 400px; }
+body { background: var(--surface); }
+.top {
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.top h1 { font-size: 16px; }
+.icon-button {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.icon-button:hover { background: var(--grey-bg); color: var(--title); }
+@media (prefers-color-scheme: dark) { .icon-button:hover { background: #353532; } }
+.icon-button svg { width: 20px; height: 20px; }
+main { padding: 12px 14px 4px; }
+#context { margin: 0 0 8px; }
+#results { max-height: 380px; overflow-y: auto; }
+#results .sd-report { margin: 0 0 10px; }
+.actions { display: flex; gap: 8px; margin: 10px 0; }
+.actions .button { flex: 1; }
+.error { color: var(--red); margin: 0 0 8px; }
+.auto-status {
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.auto-status p { margin: 0; }
+.auto-status .button { margin-top: 8px; width: 100%; }
+.auto-status.ok { padding: 6px 10px; color: var(--muted); font-size: 12px; }
+.auto-status.problem { border-color: color-mix(in srgb, var(--orange) 30%, transparent); background: var(--orange-bg); color: var(--orange); }
+footer { padding: 8px 14px 12px; border-top: 1px solid var(--border); }

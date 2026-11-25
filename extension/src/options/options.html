@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="opt.pageTitle">Scam Detector settings</title>
+  <link rel="stylesheet" href="../ui/page.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="brand page-head">
+      <img src="../../icons/icon.svg" alt="">
+      <h1 data-i18n="opt.pageTitle">Scam Detector settings</h1>
+    </header>
+
+    <form id="settings">
+      <section class="card">
+        <h2 data-i18n="opt.where">Where to check</h2>
+        <div id="access" class="access" hidden>
+          <p data-i18n="opt.access">Scam Detector isn't allowed to read Gmail and Outlook yet, so it can't put warnings above your emails automatically.</p>
+          <button id="grant-access" class="button primary" type="button" data-i18n="auto.allow">Allow automatic warnings</button>
+        </div>
+        <label class="row"><input type="checkbox" name="gmail"> Gmail <span class="muted">(mail.google.com)</span></label>
+        <label class="row"><input type="checkbox" name="outlook"> <span data-i18n="opt.outlook">Outlook on the web</span> <span class="muted">(outlook.live.com, outlook.office.com)</span></label>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="opt.language">Language</h2>
+        <label class="field">
+          <select name="language" aria-label="Language" data-i18n-aria-label="opt.language">
+            <option value="auto" data-i18n="opt.langAuto">Automatic (browser language)</option>
+            <option value="en">English</option>
+            <option value="nl">Nederlands</option>
+            <option value="fr">Français</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="opt.strict">How strict</h2>
+        <label class="field"><span data-i18n="opt.sensitivity">Sensitivity</span>
+          <select name="sensitivity">
+            <option value="relaxed" data-i18n="opt.relaxed">Relaxed: only warn when it's clearly a scam</option>
+            <option value="normal" data-i18n="opt.normal">Normal</option>
+            <option value="strict" data-i18n="opt.strictOpt">Strict: warn about more borderline messages</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="opt.trusted">Trusted senders</h2>
+        <p class="muted" data-i18n="opt.trustedHelp">For these domains the wording of the message isn't flagged. Links and attachments are still checked. One domain per line.</p>
+        <textarea name="trustedDomains" rows="4" spellcheck="false" placeholder="school.be&#10;mybank.com"></textarea>
+        <h2 class="sub" data-i18n="opt.own">Your organization's domains</h2>
+        <p class="muted" data-i18n="opt.ownHelp">Used to catch outsiders pretending to be a colleague (e.g. schooI.be with a capital I instead of an l). Your own Gmail domain is added automatically if it isn't a free mail address.</p>
+        <textarea name="ownDomains" rows="2" spellcheck="false" placeholder="school.be"></textarea>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="opt.privacy">Privacy</h2>
+        <p class="muted" data-i18n="opt.privacyHelp">Emails are analyzed on this device. Nothing about your mail is sent anywhere.</p>
+        <label class="row"><input type="checkbox" name="threatFeed"> <span data-i18n="opt.feed">Download the public OpenPhish list of phishing links every 6 hours and check links against it locally</span></label>
+        <p id="feed-status" class="small muted indent"></p>
+        <button id="refresh-feeds" class="button indent" type="button" data-i18n="opt.update">Update list now</button>
+        <label class="row top-gap"><input type="checkbox" name="rememberSenders"> <span data-i18n="opt.remember">Remember who emails me (stored only in this browser) to spot impostors using a known name</span></label>
+        <p id="sender-count" class="small muted indent"></p>
+        <button id="clear-senders" class="button indent" type="button" data-i18n="opt.forget">Forget remembered senders</button>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="opt.about">About</h2>
+        <p class="muted" data-i18n="opt.aboutText">Scam Detector is a school project. It is open source: anyone can read, check and improve the code.</p>
+        <p><a href="https://github.com/TwixAddict/scam-detector" target="_blank" rel="noopener" data-i18n="opt.source">Source code on GitHub</a></p>
+      </section>
+
+      <p id="saved" class="saved" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script src="../core/lists.js"></script>
+  <script src="../core/i18n.js"></script>
+  <script src="../core/domain.js"></script>
+  <script src="../core/phrases.js"></script>
+  <script src="../core/detector.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

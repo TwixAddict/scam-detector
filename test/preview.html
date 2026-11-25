@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Card Preview</title>
+  <link rel="stylesheet" href="../extension/src/ui/page.css">
+  <style>
+    body { background: var(--surface); }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+    h2 { font-size: 13px; font-weight: 600; color: var(--muted); margin: 22px 0 6px; }
+    .head { display: flex; align-items: center; gap: 12px; }
+    .head img { width: 56px; height: 56px; border-radius: 13px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="head"><img src="../extension/icons/icon.svg" alt=""><h1>Scam Detector: card states</h1></div>
+    <div id="cards"></div>
+  </main>
+  <script src="../extension/src/core/lists.js"></script>
+  <script src="../extension/src/core/i18n.js"></script>
+  <script src="../extension/src/core/domain.js"></script>
+  <script src="../extension/src/core/phrases.js"></script>
+  <script src="../extension/src/core/detector.js"></script>
+  <script src="../extension/src/core/html.js"></script>
+  <script src="../extension/src/core/mime.js"></script>
+  <script src="../extension/src/ui/report.js"></script>
+  <script src="../extension/src/analyzer/samples.js"></script>
+  <script>
+    (function (SD) {
+      const box = document.getElementById("cards");
+      const style = document.createElement("style");
+      style.textContent = SD.REPORT_CSS;
+      document.head.append(style);
+      const actions = (trust) => [...(trust ? [{ label: "Trust sender", onClick() {} }] : []), { label: "Close", onClick() {} }];
+      const show = (label, card) => {
+        const h = document.createElement("h2");
+        h.textContent = label;
+        box.append(h, card);
+      };
+      const sample = (id) => SD.analyze(SD.emailFromRaw(SD.SAMPLES.find((s) => s.id === id).raw), {});
+      show("1. While checking", SD.renderChecking());
+      show("2. Likely scam (folded, as it first appears)", SD.renderReport(sample("parcel"), { actions: actions(true) }));
+      show("3. Likely scam (after \"Why is this a scam?\")", SD.renderReport(sample("donation"), { actions: actions(true), expanded: true }));
+      show("4. Suspicious", SD.renderReport(SD.analyze({ from: { name: "Shop", address: "deals@shop.example" }, subject: "Re: your account",
+        text: "Dear customer, please confirm your account details today.", links: [], attachments: [], images: [] }, {}), { actions: actions(true) }));
+      show("5. Low risk", SD.renderReport(SD.analyze({ from: { name: "Shop", address: "info@shop.example" }, subject: "Re: your order",
+        text: "Hello, here is the update about your order.", links: [], attachments: [], images: [] }, {}), { actions: actions(false) }));
+      show("6. No warning signs", SD.renderReport(sample("friend"), { actions: actions(false) }));
+    })(globalThis.ScamDetector);
+  </script>
+</body>
+</html>

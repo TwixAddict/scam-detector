@@ -1,0 +1,84 @@
+/* Shared styles for the popup, options and analyzer pages. */
+:root {
+  /* Palette: red = danger, orange = doubt, green = safe, blue = buttons/links/busy, grey = text/borders/cards */
+  --red: #A32D2D; --red-bg: #FCEBEB;
+  --orange: #854F0B; --orange-bg: #FAEEDA;
+  --green: #3B6D11; --green-bg: #EAF3DE;
+  --blue: #185FA5; --blue-bg: #E6F1FB;
+  --grey: #444441; --grey-bg: #F1EFE8;
+
+  --bg: #FFFFFF;          /* cards */
+  --surface: #F1EFE8;     /* page background */
+  --border: rgba(68, 68, 65, 0.18);
+  --text: #444441;
+  --title: #2C2C2A;
+  --muted: #6E6D66;
+  --accent: #185FA5;
+  --accent-text: #FFFFFF;
+  --focus: #185FA5;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --red: #F09595; --red-bg: #4A2222;
+    --orange: #E9B467; --orange-bg: #47341A;
+    --green: #A6CF7C; --green-bg: #2E3F1E;
+    --blue-bg: #1D3550;
+    --bg: #2A2A28;
+    --surface: #1F1F1E;
+    --border: #3D3D3A;
+    --text: #DAD8D0;
+    --title: #F4F3EE;
+    --muted: #A9A79F;
+    --accent: #185FA5;
+    --accent-text: #FFFFFF;
+    --focus: #7FB2E8;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+h1, h2, h3 { line-height: 1.2; margin: 0; text-wrap: balance; color: var(--title); }
+a { color: var(--accent); }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+
+.button {
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--title);
+  transition: background-color .15s, filter .15s;
+}
+.button:hover { background: var(--grey-bg); }
+.button:active { transform: scale(.97); }
+@media (prefers-color-scheme: dark) { .button:hover { background: #353532; } }
+.button.primary:hover { background: var(--accent); filter: brightness(1.12); }
+.button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.button:disabled { opacity: 0.6; cursor: default; }
+.button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand img { width: 28px; height: 28px; border-radius: 7px; }
+.empty {
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  color: var(--muted);
+  text-align: center;
+}

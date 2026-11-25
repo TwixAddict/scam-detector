@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scam Detector</title>
+  <meta name="description" content="A free, open-source Firefox extension that warns you about phishing and scam emails in Gmail and Outlook. A school project; everything is checked on your own device.">
+  <link rel="icon" href="app/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="./"><img src="app/icons/icon.svg" alt="">Scam Detector</a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#demo">Try it</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="https://github.com/TwixAddict/scam-detector">GitHub</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <div class="tags"><span class="tag">School project</span><span class="tag">Open source</span><span class="tag">Runs on your device</span></div>
+        <h1>Spot scam emails before you click.</h1>
+        <p class="lead">Scam Detector is a free Firefox extension that puts a clear warning above suspicious emails in Gmail and Outlook, and explains why in plain language.</p>
+        <div class="buttons">
+          <a class="button primary" id="amo-link" href="https://addons.mozilla.org/firefox/addon/scam-detector-school/">Add to Firefox</a>
+          <a class="button" href="https://github.com/TwixAddict/scam-detector">View the source code</a>
+        </div>
+        <p class="small muted" style="margin-top:12px">English · Nederlands · Français</p>
+      </div>
+      <div class="mock" aria-label="Example: a warning above an email">
+        <div class="mock-bar"><span></span><span></span><span></span></div>
+        <div class="mock-body">
+          <div class="mock-from"><b>bpost</b> &lt;info@bpost-levering-be.top&gt;</div>
+          <div class="mock-subject">Uw pakket staat in de wacht</div>
+          <div id="hero-card"></div>
+          <div class="mock-text">Beste klant, uw pakket kon niet worden bezorgd omdat er nog douanekosten openstaan van €1,99…</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="card notice">
+      <p><strong>A school project, open source.</strong> Scam Detector was made as a school project. All of its code is public on
+        <a href="https://github.com/TwixAddict/scam-detector">GitHub</a>, so anyone can read exactly what it does, check it, or improve it.
+        It is not made by, or connected to, Google, Microsoft or any company it mentions.</p>
+      <p class="small muted" style="margin:0">No checker catches every scam. Treat a green card as "nothing obvious found", not as a guarantee.</p>
+    </div>
+
+    <section id="how">
+      <h2>How it works</h2>
+      <div class="grid3">
+        <div class="card"><div class="step-num">1</div><h3>Open an email</h3><p>In Gmail or Outlook on the web. There's nothing to click: the extension reads the email that is open on your screen.</p></div>
+        <div class="card"><div class="step-num">2</div><h3>It's checked on your device</h3><p>More than 70 warning signs: fake senders, lookalike links, dangerous attachments, pressure tactics and more. Your mail never leaves your computer.</p></div>
+        <div class="card"><div class="step-num">3</div><h3>You get a clear card</h3><p>Red for a likely scam, orange for suspicious, green when nothing was found, with the reasons in plain language.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What it looks for</h2>
+      <div class="grid2">
+        <div class="card"><h3>Sender</h3><ul class="checks">
+          <li>Names like "PayPal" sent from an address that isn't PayPal's</li>
+          <li>Lookalike domains such as paypa1.com or rnicrosoft.com</li>
+          <li>Random-looking addresses and failed sender checks (SPF, DKIM, DMARC)</li>
+        </ul></div>
+        <div class="card"><h3>Links</h3><ul class="checks">
+          <li>Links that show one address but open another</li>
+          <li>Known phishing links (public OpenPhish list, checked locally)</li>
+          <li>Shortened links, free hosting, "contact us on WhatsApp"</li>
+        </ul></div>
+        <div class="card"><h3>Attachments</h3><ul class="checks">
+          <li>Programs (.exe, .js, .iso…) and web pages sent as files</li>
+          <li>Double extensions like invoice.pdf.exe</li>
+          <li>Password-protected archives with the password in the mail</li>
+        </ul></div>
+        <div class="card"><h3>Wording and tricks</h3><ul class="checks">
+          <li>Urgency, requests for passwords or card details, gift cards and crypto</li>
+          <li>Parcel fees, fake invoices, "you've won", blackmail, casino and pirate-TV spam</li>
+          <li>Hidden text and invisible characters meant to fool spam filters</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <h2>Try it here</h2>
+      <p class="muted">This runs the extension's real checking code in your browser. Pick an example or paste an email (its full source works best).</p>
+      <div class="demo">
+        <div class="card">
+          <div class="demo-controls">
+            <select id="sample" aria-label="Example email"><option value="">Load an example…</option></select>
+            <select id="lang" aria-label="Language" style="flex:none">
+              <option value="en">English</option><option value="nl">Nederlands</option><option value="fr">Français</option>
+            </select>
+          </div>
+          <textarea id="raw" spellcheck="false" placeholder="From: ...&#10;Subject: ...&#10;&#10;Message text" aria-label="Email to check"></textarea>
+          <div class="buttons" style="margin-top:10px"><button class="button primary" id="check" type="button">Check email</button></div>
+        </div>
+        <div id="result" aria-live="polite"><div class="empty">The result shows up here.</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Your privacy</h2>
+      <p>Emails are analyzed inside your browser and are never sent anywhere. The extension collects no data and has no analytics.
+        The only download is the public OpenPhish list of phishing links, which is compared with your links on your own device.
+        <a href="privacy.html">Read the privacy policy</a>.</p>
+    </section>
+
+    <footer>
+      <p>Scam Detector · a school project · open source under the <a href="https://github.com/TwixAddict/scam-detector/blob/main/LICENSE">MIT License</a></p>
+      <p><a href="https://github.com/TwixAddict/scam-detector">Source code</a> · <a href="https://github.com/TwixAddict/scam-detector/issues">Report a problem</a> · <a href="privacy.html">Privacy policy</a></p>
+    </footer>
+  </div>
+
+  <script src="app/core/lists.js"></script>
+  <script src="app/core/i18n.js"></script>
+  <script src="app/core/domain.js"></script>
+  <script src="app/core/phrases.js"></script>
+  <script src="app/core/detector.js"></script>
+  <script src="app/core/html.js"></script>
+  <script src="app/core/mime.js"></script>
+  <script src="app/ui/report.js"></script>
+  <script src="app/analyzer/samples.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

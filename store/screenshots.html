@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Store Screenshots</title>
+  <!-- Renders the store screenshots (1280x800) from the real extension code.
+       Open with ?shot=1, 2 or 3; scripts/make_screenshots.sh captures them with headless Firefox. -->
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 1280px; height: 800px; overflow: hidden; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    body { background: #F1EFE8; color: #444441; display: grid; grid-template-columns: 430px 1fr; }
+    body.dark { background: #1F1F1E; color: #DAD8D0; }
+    .pitch { padding: 70px 40px 40px 56px; }
+    .pitch img { width: 64px; height: 64px; }
+    .pitch h1 { font-size: 40px; line-height: 1.1; color: #2C2C2A; margin: 26px 0 16px; letter-spacing: -0.02em; }
+    .dark .pitch h1 { color: #F4F3EE; }
+    .pitch p { font-size: 19px; line-height: 1.5; margin: 0 0 14px; }
+    .pill { display: inline-block; font-size: 14px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: #E6F1FB; color: #185FA5; margin: 0 6px 8px 0; }
+    .dark .pill { background: #1D3550; color: #7FB2E8; }
+    .mail { margin: 40px 40px 0 0; background: #fff; border-radius: 18px 18px 0 0; box-shadow: 0 16px 40px rgba(0,0,0,.12); overflow: hidden; height: 760px; }
+    .dark .mail { background: #2A2A28; }
+    .toolbar { height: 54px; background: #F6F8FC; border-bottom: 1px solid #E3E3E3; display: flex; align-items: center; gap: 14px; padding: 0 18px; }
+    .dark .toolbar { background: #232322; border-color: #3D3D3A; }
+    .search { flex: 1; height: 34px; border-radius: 17px; background: #E9EEF6; }
+    .dark .search { background: #353532; }
+    .ext { width: 28px; height: 28px; position: relative; }
+    .ext img { width: 28px; height: 28px; }
+    .badge { position: absolute; right: -6px; bottom: -4px; background: #A32D2D; color: #fff; font: 700 11px/16px system-ui; min-width: 16px; text-align: center; border-radius: 8px; padding: 0 4px; }
+    .msg { padding: 22px 30px; }
+    .subject { font-size: 22px; color: #1F1F1F; margin-bottom: 14px; }
+    .dark .subject { color: #F4F3EE; }
+    .from { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; font-size: 14px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: #C9D7E8; display: grid; place-items: center; font-weight: 700; color: #185FA5; }
+    .from b { color: #1F1F1F; }
+    .dark .from b { color: #F4F3EE; }
+    .body { font-size: 15px; line-height: 1.6; color: #3C4043; margin-top: 6px; }
+    .dark .body { color: #C8C6BE; }
+    .btn { display: inline-block; background: #D40511; color: #fff; padding: 10px 18px; border-radius: 6px; font-weight: 600; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="pitch">
+    <img src="../extension/icons/icon.svg" alt="">
+    <h1 id="headline"></h1>
+    <div id="pitch"></div>
+  </div>
+  <div class="mail">
+    <div class="toolbar"><div class="search"></div><div class="ext"><img src="../extension/icons/icon.svg" alt=""><span class="badge" id="badge">!</span></div></div>
+    <div class="msg">
+      <div class="subject" id="subject"></div>
+      <div class="from"><div class="avatar" id="avatar"></div><div id="from"></div></div>
+      <div id="card"></div>
+      <div class="body" id="body"></div>
+    </div>
+  </div>
+
+  <script src="../extension/src/core/lists.js"></script>
+  <script src="../extension/src/core/i18n.js"></script>
+  <script src="../extension/src/core/domain.js"></script>
+  <script src="../extension/src/core/phrases.js"></script>
+  <script src="../extension/src/core/detector.js"></script>
+  <script src="../extension/src/core/html.js"></script>
+  <script src="../extension/src/core/mime.js"></script>
+  <script src="../extension/src/ui/report.js"></script>
+  <script src="../extension/src/analyzer/samples.js"></script>
+  <script>
+    (function (SD) {
+      const shot = new URLSearchParams(location.search).get("shot") || "1";
+      const style = document.createElement("style");
+      style.textContent = SD.REPORT_CSS;
+      document.head.append(style);
+      const $ = (id) => document.getElementById(id);
+      const text = (id, value) => { $(id).textContent = value; };
+      const pills = (list) => $("pitch").append(...list.map((t) => Object.assign(document.createElement("span"), { className: "pill", textContent: t })));
+      const para = (t) => $("pitch").append(Object.assign(document.createElement("p"), { textContent: t }));
+      const sample = (id) => SD.emailFromRaw(SD.SAMPLES.find((s) => s.id === id).raw);
+      const actions = (trust) => [...(trust ? [{ label: SD.t("action.trust"), onClick() {} }] : []), { label: SD.t("action.close"), onClick() {} }];
+
+      const fromLine = (email) => {
+        const b = document.createElement("b");
+        b.textContent = email.from.name;
+        $("from").append(b, ` <${email.from.address}>`);
+        $("avatar").textContent = email.from.name[0].toUpperCase();
+        text("subject", email.subject);
+      };
+
+      if (shot === "1") {
+        const email = sample("parcel");
+        text("headline", "A clear warning above scam emails");
+        para("Opens automatically in Gmail and Outlook on the web. Red for a likely scam, orange for suspicious, green when nothing was found.");
+        pills(["School project", "Open source"]);
+        fromLine(email);
+        $("card").append(SD.renderReport(SD.analyze(email, {}), { actions: actions(true), theme: "light" }));
+        text("body", "Beste klant, uw pakket kon niet worden bezorgd omdat er nog douanekosten openstaan van €1,99. Betaal binnen 24 uur, anders wordt het pakket teruggestuurd.");
+      } else if (shot === "2") {
+        const email = sample("donation");
+        text("headline", "Explains why, in plain language");
+        para("Over 70 warning signs: fake senders, lookalike links, dangerous attachments, money promises, hidden text and more.");
+        para("Available in English, Dutch and French.");
+        pills(["Checked on your device"]);
+        fromLine(email);
+        $("card").append(SD.renderReport(SD.analyze(email, {}), { actions: actions(true), expanded: true, theme: "light" }));
+      } else {
+        document.body.classList.add("dark");
+        SD.setLanguage("nl");
+        const email = sample("friend");
+        text("headline", "Follows your mailbox theme and language");
+        para("Dark mailbox, dark card. Shown here in Dutch; French and English work the same way.");
+        para("Your emails are never uploaded. No tracking, no account.");
+        pills(["Open source", "Privacy friendly"]);
+        $("badge").remove();
+        fromLine(email);
+        $("card").append(SD.renderReport(SD.analyze(email, {}), { actions: actions(false), theme: "dark" }));
+        text("body", "Top, ik neem het deel over de Eerste Wereldoorlog. Zullen we donderdag na school afspreken?");
+      }
+    })(globalThis.ScamDetector);
+  </script>
+</body>
+</html>

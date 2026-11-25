@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="an.pageTitle">Email Source Check</title>
+  <link rel="stylesheet" href="../ui/page.css">
+  <link rel="stylesheet" href="analyzer.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="brand page-head">
+      <img src="../../icons/icon.svg" alt="">
+      <div>
+        <h1 data-i18n="an.title">Check an email's source</h1>
+        <p class="muted" data-i18n="an.sub">The full source includes the sender checks (SPF, DKIM, DMARC) and Reply-To that webmail hides.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card input-card">
+        <label for="raw" class="label" data-i18n="an.paste">Paste the email source or just its text</label>
+        <p class="muted small hint" data-i18n="an.hint">Gmail: open the email, click ⋮ → Show original, then Copy to clipboard. Outlook: ⋯ → View → View message source. Or drop an .eml file here.</p>
+        <textarea id="raw" spellcheck="false" placeholder="From: ...&#10;Subject: ...&#10;&#10;Message text" data-i18n-placeholder="an.placeholder"></textarea>
+        <div class="controls">
+          <button id="analyze" class="button primary" type="button" data-i18n="an.check">Check email</button>
+          <label class="button file-button"><span data-i18n="an.open">Open .eml file</span><input id="file" type="file" accept=".eml,.txt,message/rfc822"></label>
+          <select id="samples" aria-label="Load an example email" data-i18n-aria-label="an.example">
+            <option value="" data-i18n="an.example">Load an example…</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card output-card" aria-live="polite">
+        <div id="output" class="empty" data-i18n="an.empty">The result shows up here.</div>
+        <dl id="facts" hidden></dl>
+      </section>
+    </div>
+    <p class="muted small privacy" data-i18n="an.privacy">Everything is checked inside your browser. The email is not uploaded anywhere.</p>
+  </main>
+
+  <script src="../core/lists.js"></script>
+  <script src="../core/i18n.js"></script>
+  <script src="../core/domain.js"></script>
+  <script src="../core/phrases.js"></script>
+  <script src="../core/detector.js"></script>
+  <script src="../core/html.js"></script>
+  <script src="../core/mime.js"></script>
+  <script src="../ui/report.js"></script>
+  <script src="../content/runner.js"></script>
+  <script src="samples.js"></script>
+  <script src="analyzer.js"></script>
+</body>
+</html>

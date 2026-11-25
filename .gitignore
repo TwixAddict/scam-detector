@@ -1,0 +1,16 @@
+# Build output
+dist/
+_site/
+web-ext-artifacts/
+
+# Editors and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Never commit real emails: keep test .eml files you collect locally in here
+private/
+*.eml

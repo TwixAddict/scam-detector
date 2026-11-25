@@ -1,0 +1,83 @@
+{
+  "manifest_version": 3,
+  "name": "Scam Detector",
+  "version": "1.0.0",
+  "description": "Warns about phishing and scam emails in Gmail and Outlook, checked on your own device. Open-source school project.",
+  "homepage_url": "https://github.com/TwixAddict/scam-detector",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "storage",
+    "alarms",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "https://outlook.live.com/*",
+    "https://outlook.office.com/*",
+    "https://outlook.office365.com/*",
+    "https://openphish.com/*"
+  ],
+  "background": {
+    "scripts": [
+      "src/core/lists.js",
+      "src/core/i18n.js",
+      "src/core/domain.js",
+      "src/core/phrases.js",
+      "src/core/detector.js",
+      "src/background/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://outlook.live.com/*",
+        "https://outlook.office.com/*",
+        "https://outlook.office365.com/*"
+      ],
+      "js": [
+        "src/core/lists.js",
+        "src/core/i18n.js",
+        "src/core/domain.js",
+        "src/core/phrases.js",
+        "src/core/detector.js",
+        "src/core/html.js",
+        "src/core/mime.js",
+        "src/ui/report.js",
+        "src/content/adapters.js",
+        "src/content/runner.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Scam Detector",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "64": "icons/icon-64.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "scam-detector@twixaddict.github.io",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  }
+}

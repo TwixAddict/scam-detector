@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scam Detector tests</title>
+  <style>
+    body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; max-width: 980px; }
+    .pass { color: #1e6b3a; } .fail { color: #b3261e; font-weight: 600; }
+    pre { white-space: pre-wrap; background: #f4f4f4; padding: 8px; border-radius: 6px; }
+    #fixture { border: 1px dashed #aaa; padding: 12px; margin-top: 24px; }
+    h2 { margin-top: 28px; }
+  </style>
+</head>
+<body>
+  <h1 id="summary">Running…</h1>
+  <div id="log"></div>
+
+  <h2>Sample reports</h2>
+  <div id="reports"></div>
+
+  <h2>Fake Gmail message (live DOM extraction + banner)</h2>
+  <div id="fixture">
+    <h2 class="hP">Action required: verify your account</h2>
+    <div class="adn" data-message-id="#msg-f:123">
+      <span class="gD" email="security@micros0ft-support.com" name="Microsoft account team">Microsoft account team</span>
+      <span class="g2" email="me@example.com">me</span>
+      <div class="ii gt">
+        <div class="a3s aiL">
+          <p>Dear User,</p>
+          <p>Your mailbox is full. Sign in within 48 hours or your account will be deleted.</p>
+          <p><a href="https://login.micros0ft-support.com/owa">Sign in to restore access</a></p>
+          <p>Pay&#8203;Pal and Micro&#8203;soft are partners.</p>
+          <div style="color:#ffffff;background:#ffffff">invoice meeting schedule report weather garden football holiday recipe music library travel family dinner weekend coffee project budget review notes summary draft update office lunch season museum concert theatre picnic cinema novel poem painting sculpture photography hiking cycling swimming tennis cooking baking</div>
+        </div>
+      </div>
+      <div class="aQH"><span download_url="text/html:Payment_Remittance.htm:https://mail.google.com/x"></span></div>
+    </div>
+  </div>
+
+  <div id="fontzero" style="font-size:0;background:#fff">
+    <div style="font-size:16px;color:#333">Dear FlixBus Customer, thank you for your booking. Please find your invoice attached.</div>
+    <div style="color:#fff"><span style="color:#333;font-size:14px">Want to cancel or change your trip? Use Manage My Booking.</span></div>
+    <span style="font-size:0">stuffedword alpha beta gamma</span>
+  </div>
+
+  <script src="../extension/src/core/lists.js"></script>
+  <script src="../extension/src/core/i18n.js"></script>
+  <script src="../extension/src/core/domain.js"></script>
+  <script src="../extension/src/core/phrases.js"></script>
+  <script src="../extension/src/core/detector.js"></script>
+  <script src="../extension/src/core/html.js"></script>
+  <script src="../extension/src/core/mime.js"></script>
+  <script src="../extension/src/ui/report.js"></script>
+  <script src="../extension/src/content/adapters.js"></script>
+  <script src="../extension/src/analyzer/samples.js"></script>
+  <script src="tests.js"></script>
+</body>
+</html>

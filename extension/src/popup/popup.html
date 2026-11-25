@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scam Detector</title>
+  <link rel="stylesheet" href="../ui/page.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="../../icons/icon.svg" alt="">
+      <h1>Scam Detector</h1>
+    </div>
+    <button id="open-options" class="icon-button" type="button" title="Settings" aria-label="Settings" data-i18n-title="popup.settings" data-i18n-aria-label="popup.settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.5 7.5 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.5 7.5 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.5 7.5 0 0 0 1.7 1L11 21h4l.4-2.9a7.5 7.5 0 0 0 1.7-1l2.5 1 2-3.5L19.4 13zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <div id="auto-status" class="auto-status" hidden>
+      <p id="auto-text"></p>
+      <button id="auto-fix" class="button primary" type="button" hidden></button>
+    </div>
+    <p id="context" class="muted small"></p>
+    <div id="results"></div>
+    <div class="actions">
+      <button id="scan-page" class="button primary" type="button" data-i18n="popup.scan">Scan this page</button>
+      <button id="open-analyzer" class="button" type="button" data-i18n="popup.source">Check email source…</button>
+    </div>
+    <p id="scan-error" class="small error" hidden></p>
+  </main>
+
+  <footer id="feed-status" class="small muted"></footer>
+
+  <script src="../core/lists.js"></script>
+  <script src="../core/i18n.js"></script>
+  <script src="../core/domain.js"></script>
+  <script src="../core/phrases.js"></script>
+  <script src="../core/detector.js"></script>
+  <script src="../ui/report.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
